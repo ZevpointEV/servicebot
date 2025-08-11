@@ -16,12 +16,12 @@ def webhook():
         data = request.json or {}
         print("📦 Incoming data from Interakt:", data, flush=True)
 
-        chat_type = data.get("data", {}).get("chat_message_type")
+        chat_type = data.get("data", {}).get("message", {}).get("chat_message_type")
         if chat_type != "CustomerMessage":
             print(f"🔁 Skipping message because chat_message_type is '{chat_type}'", flush=True)
             return jsonify({"status": "ignored"}), 200
 
-        user_msg = data.get("data", {}).get("message")
+        user_msg = data.get("data", {}).get("message", {}).get("message")
         phone_number_raw = data.get("data", {}).get("customer", {}).get("phone_number")
         country_code = data.get("data", {}).get("customer", {}).get("country_code", "+91")
         phone_number = f"{country_code}{phone_number_raw}"
