@@ -10,13 +10,13 @@ INTERAKT_API_KEY = os.getenv("INTERAKT_API_KEY")
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    print("🚨 Webhook endpoint hit!")
+    print("🚨 Webhook endpoint hit!", flush=True)
     try:
         data = request.json or {}
-        print("📦 Incoming data from Interakt:", data)
+        print("📦 Incoming data from Interakt:", data, flush=True)
 
         if not data.get("message"):
-            print("📩 Test webhook received from Interakt")
+            print("📩 Test webhook received from Interakt", flush=True)
             return jsonify({"status": "ok"}), 200
 
         user_msg = data.get("message")
@@ -56,11 +56,11 @@ def webhook():
 
         res = requests.post("https://api.interakt.ai/v1/public/message/", json=payload, headers=headers)
 
-        print(f"✅ Replied to {phone_number}: {reply}")
+        print(f"✅ Replied to {phone_number}: {reply}", flush=True)
         return jsonify({"status": "sent", "interakt": res.json()}), 200
 
     except Exception as e:
-        print("❌ Error:", e)
+        print("❌ Error:", e, flush=True)
         return jsonify({"error": str(e)}), 200
 
 if __name__ == "__main__":
