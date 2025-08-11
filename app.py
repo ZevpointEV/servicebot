@@ -21,7 +21,9 @@ def webhook():
             return jsonify({"status": "ok"}), 200
 
         user_msg = data.get("data", {}).get("message")
-        phone_number = data.get("data", {}).get("customer", {}).get("phone_number")
+        phone_number_raw = data.get("data", {}).get("customer", {}).get("phone_number")
+        country_code = data.get("data", {}).get("customer", {}).get("country_code", "+91")
+        phone_number = f"{country_code}{phone_number_raw}"
         name = data.get("data", {}).get("customer", {}).get("traits", {}).get("name", "Customer")
 
         prompt = f'''
