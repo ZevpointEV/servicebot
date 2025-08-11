@@ -15,13 +15,13 @@ def webhook():
         data = request.json or {}
         print("📦 Incoming data from Interakt:", data, flush=True)
 
-        if not data.get("message"):
+        if not data.get("data", {}).get("message"):
             print("📩 Test webhook received from Interakt", flush=True)
             return jsonify({"status": "ok"}), 200
 
         user_msg = data.get("data", {}).get("message")
         phone_number = data.get("data", {}).get("customer", {}).get("phone_number")
-         name = data.get("data", {}).get("customer", {}).get("traits", {}).get("name", "Customer")
+        name = data.get("data", {}).get("customer", {}).get("traits", {}).get("name", "Customer")
 
         prompt = f'''
         A customer named {name} says: "{user_msg}"
