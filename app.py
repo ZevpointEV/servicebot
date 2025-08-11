@@ -16,14 +16,10 @@ def webhook():
         data = request.json or {}
         print("📦 Incoming data from Interakt:", data, flush=True)
 
-        # ✅ Prevent infinite loop: Only respond to actual customer messages
-        if data.get("data", {}).get("chat_message_type") != "CustomerMessage":
-            print("🔁 Skipping non-customer message (likely bot reply)", flush=True)
+        chat_type = data.get("data", {}).get("chat_message_type")
+        if chat_type != "CustomerMessage":
+            print(f"🔁 Skipping message because chat_message_type is '{chat_type}'", flush=True)
             return jsonify({"status": "ignored"}), 200
-
-        if not data.get("data", {}).get("message"):
-            print("📩 Test webhook received from Interakt", flush=True)
-            return jsonify({"status": "ok"}), 200
 
         user_msg = data.get("data", {}).get("message")
         phone_number_raw = data.get("data", {}).get("customer", {}).get("phone_number")
