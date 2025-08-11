@@ -12,6 +12,7 @@ INTERAKT_API_KEY = os.getenv("INTERAKT_API_KEY")
 def webhook():
     try:
         data = request.json or {}
+        print("📦 Incoming data from Interakt:", data)
 
         if not data.get("message"):
             print("📩 Test webhook received from Interakt")
