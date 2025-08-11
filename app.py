@@ -62,6 +62,8 @@ def webhook():
         res = requests.post("https://api.interakt.ai/v1/public/message/", json=payload, headers=headers)
 
         print(f"✅ Replied to {phone_number}: {reply}", flush=True)
+        print("📬 Interakt API response:", res.status_code, res.text, flush=True)
+
         return jsonify({"status": "sent", "interakt": res.json()}), 200
 
     except Exception as e:
