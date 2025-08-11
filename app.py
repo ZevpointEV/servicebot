@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import openai
 import requests
 import os
+import base64
 
 app = Flask(__name__)
 
@@ -44,13 +45,17 @@ def webhook():
         reply = response.choices[0].message.content.strip()
 
         payload = {
-            "receiver": phone_number,
-            "type": "text",
-            "message": { "text": reply }
+            "userId": "",
+            "fullPhoneNumber": phone_number,
+            "callbackData": "zevpoint-response",
+            "type": "Text",
+            "data": {
+                "message": reply
+            }
         }
 
         headers = {
-            "Authorization": f"Bearer {INTERAKT_API_KEY}",
+            "Authorization": f"Basic {INTERAKT_API_KEY}",
             "Content-Type": "application/json"
         }
 
