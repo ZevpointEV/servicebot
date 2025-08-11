@@ -27,15 +27,18 @@ def webhook():
         phone_number = f"{country_code}{phone_number_raw}"
         name = data.get("data", {}).get("customer", {}).get("traits", {}).get("name", "Customer")
 
-        prompt = f'''
-        A customer named {name} says: "{user_msg}"
-        If the message includes '00', explain it means no current is being detected.
-        Suggest:
-        1. Power socket and supply
-        2. MCB (main switch)
-        3. Earthing
-        Offer escalation if needed.
-        '''
+        # Smarter, more flexible prompt
+        prompt = f"""
+You are a helpful support assistant for ZevPoint.
+A customer named {name} said: "{user_msg}"
+
+Understand their question and reply accordingly.
+- If the user mentions charger showing '00' or '0.00', explain it's a no-current error and guide them to check power, MCB, and earthing.
+- If the question is unrelated to charging, answer appropriately.
+- If unclear or outside your scope, offer to escalate to a human support team.
+
+Keep the tone polite, supportive, and concise.
+"""
 
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
