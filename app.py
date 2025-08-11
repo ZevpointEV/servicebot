@@ -10,6 +10,7 @@ INTERAKT_API_KEY = os.getenv("INTERAKT_API_KEY")
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
+    print("🚨 Webhook endpoint hit!")
     try:
         data = request.json or {}
         print("📦 Incoming data from Interakt:", data)
